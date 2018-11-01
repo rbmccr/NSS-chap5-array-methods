@@ -1,3 +1,5 @@
+// ----- Solar System
+
 /*
     Use the forEach method to add the name of each planet
     to a section element in your HTML with an id of "planets".
@@ -49,10 +51,92 @@ let iLikeTheLetterE = planets.filter(planet => { //using map returns some undefi
     }
 });
 
-console.log(iLikeTheLetterE);
+console.log("filter array by letter \"e\": " + iLikeTheLetterE);
 
-let allAboutE = planets
+let allAboutE = planets.filter(planet => planet.includes("e"));
+
+console.log("here's another way to filter: " + allAboutE)
 
 // Use the reduce method to create a sentence from the words in the following array
 const words = ["The", "early", "bird", "might", "get", "the", "worm", "but", "the", "second", "mouse", "gets", "the", "cheese"];
 
+console.log(words.reduce((a,b) => a + " " + b))
+
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+
+// ----- Spam, spam, spam!
+
+    // extract just the customers' contact email addresses and
+    // store them in a new array. 
+
+let emails = [];
+
+//loop outer array to view 10 objects
+customers.forEach(jsonObj => {
+    //access email addresses in each object
+    jsonObj.contacts.email.forEach(emailAddress => {
+        // push each email to new array
+        emails.push(emailAddress);
+    });
+})
+
+console.log(emails);
+
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+
+// ----- Challenge: chaining methods
+
+    // Using one single line of JavaScript code, complete the following tasks on the array of integers below.
+
+    // Sort the numbers in descending order (10, 9, 8, 7, etc).
+    // Remove any integers greater than 19.
+    // Multiply each remaining number by 1.5 and then subtract 1.
+    // Then output (either in the DOM or the console) the sum of all the resulting numbers.
+
+const integers = [13, 25, 6, 3, 11, 2, 18, 7, 21, 1, 29, 20, 12, 8];
+
+console.log(integers.sort((a, b) => b - a).filter(num => num < 19).map(num => num * 1.5 - 1).reduce((a,b) => a + b));
+
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+
+// ----- Advanced challenge: car dealership
+
+    // Which salesperson sold the most cars?
+    // Which salesperson made the most profit?
+    // Which model was the most popular?
+    // Which bank provided the most loans to our customers?
+
+    // --- Total profit for 2017
+let sales = [];
+
+cars.forEach(sale => {
+    sales.push(sale.gross_profit)
+});
+
+console.log(`Total profit for 2017 = $${sales.reduce((a,b) => a+b)}`)
+
+    // --- In which month did they sell the most cars?
+let saleDates = [];
+let months = [];
+
+//store sale dates in array
+cars.forEach(sale => {
+    saleDates.push(sale.purchase_date);
+});
+
+// store sale date months in array
+saleDates.forEach(carSaleDate => {
+    months.push(carSaleDate.slice(5,7))
+})
+
+//sort months by converting strings to numbers first
+months.sort((a,b) => Number(b) - Number(a))
+
+console.log(saleDates)
+console.log(months)
