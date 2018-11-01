@@ -220,22 +220,76 @@ salesPeopleResults.forEach(obj => {
     }
 });
 
-console.log(`#3: The top sales person is ${topSalesPerson} with ${maxSales} sales`)
+console.log(`#3: The top salesperson is ${topSalesPerson} with ${maxSales} sales`)
 
 
     // ---------- #4: Which salesperson made the most profit?
-    let salesPeopleProfit = [];
-    
-    //array of salesPeople names define in #3
-    //if the fullname is equal to the sales_agent in the cars object,
-    //then sum the person's total profit and store it in an object with their name
-    salesPeople.forEach(name => {
-        let profit = 0;
-        if (cars.sales_agent === name) {
-            
-        }
+let salesPeopleProfit = [];
 
-    })
+//Steps:
+// - Loop over each object (31 total, which can be seen with 
+//   console.log(salesPeopleResults)) in the organized array of
+//   salespeople created in problem #3 and compare the name of each
+//   person with each dealership object. 
+// - Loop over each object in cars.js (dealership records) and look
+//   at each object (we want sales_agent.first_name and last_name
+//   and also the gross_profit)
+//      - If the full name of the person in the dealership object matches 
+//        the full name in the organized 
+//        array, then the profit variable for that person is incremented
+// - The result is expected to have 31 objects (total salespeople) 
+//   in an array listed with the person's respective profit
+
+
+salesPeopleResults.forEach(personObj => {
+    let profit = 0;
+    //salesperson name in organized array
+    let name = personObj.salesperson; 
+    //if fullname in each cars array object = the salesperson 
+    //name string in the salesPeopleResults array (see problem #3),
+    //then increment the profit for that person
+
+    cars.forEach(dealershipObj => {
+        let firstname = `${dealershipObj.sales_agent.first_name}`;
+        let lastname = `${dealershipObj.sales_agent.last_name}`;
+        let fullname = firstname + " " + lastname; //dealership record of salesperson who sold vehicle
+        
+        if (fullname === name) {
+            profit += dealershipObj.gross_profit;
+        }
+    });
+
+    //push new object with salesperson name and their profit to array
+    let b = new Object();
+    b.salesperson = name;
+    b.profit = `${profit.toFixed(2)}`;
+    salesPeopleProfit.push(b);
+})
+
+//Here's the array with each individual's profit results:
+console.log(salesPeopleProfit);
+//Now let's find the top earning salesperson:
+
+//set initial best sales person to first person in array
+let topSalesPersonProfit = salesPeopleProfit[0].salesperson;
+//set initial max to first person's total sales in array
+let maxProfit = Number(salesPeopleProfit[0].profit);
+
+//for every person (each individual salesperson) in the array of objects
+//compare with the current top earner and their max profit value
+salesPeopleProfit.forEach(obj => {
+    let currentObjProfit = Number(obj.profit);
+
+    if (currentObjProfit > maxProfit) {
+        topSalesPersonProfit = obj.salesperson;
+        maxProfit = obj.profit;
+    } else if (currentObjProfit === maxSales) {
+        topSalesPersonProfit += ", " + obj.salesperson;
+    }
+
+});    
+
+console.log(`#4: The salesperson with the highest earnings is ${topSalesPersonProfit} at $${maxProfit}`)
 
 
     // ---------- #5: Which model was the most popular?
