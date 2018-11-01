@@ -107,12 +107,7 @@ console.log(integers.sort((a, b) => b - a).filter(num => num < 19).map(num => nu
 
 // ----- Advanced challenge: car dealership
 
-    // Which salesperson sold the most cars?
-    // Which salesperson made the most profit?
-    // Which model was the most popular?
-    // Which bank provided the most loans to our customers?
-
-    // --- Total profit for 2017
+    // ---------- #1: Total profit for 2017
 let sales = [];
 
 cars.forEach(sale => {
@@ -121,7 +116,7 @@ cars.forEach(sale => {
 
 console.log(`#1: Total profit for 2017 = $${sales.reduce((a,b) => a+b)}`)
 
-    // --- In which month did they sell the most cars?
+    // ---------- #2: In which month did they sell the most cars?
 let saleDates = [];
 let months = [];
 let sortedMonths = [];
@@ -169,3 +164,79 @@ countEachMonth(months);
 
 console.log("#2: June had the most sales (10 total). See this array: ", sortedMonths)
 
+    // ---------- #3: Which salesperson sold the most cars?
+let salesPeople = [];
+let salesPeopleResults = [];
+
+//add names to an array
+cars.forEach(jsonObj => {
+    let firstname = jsonObj.sales_agent.first_name;
+    let lastname = jsonObj.sales_agent.last_name;
+    salesPeople.push(`${firstname} ${lastname}`)
+})
+
+//count how many times each person sold a vehicle and put result into array
+function countSalesPeopleResults(array) {
+	// make a copy of the input array
+    let copy = array.slice(0);
+    // first loop goes over every element
+	for (let i = 0; i < array.length; i++) {
+		let counter = 0;	
+		// loop over every element in the copy and see if it's the same as each index "i"
+		for (let j = 0; j < copy.length; j++) {
+			if (array[i] == copy[j]) {
+				// increase amount of times duplicate is found
+				counter++;
+				// sets item to undefined
+				delete copy[j];
+			}
+        }
+    // nested loop ends, and any copies of array[i] are recorded in an object and then pushed to an array
+		if (counter > 0) {
+			let a = new Object();
+			a.salesperson = array[i];
+			a.count = counter;
+			salesPeopleResults.push(a);
+		}
+    }
+}
+
+//this function call populates an array with objects of salesperson and total sales
+countSalesPeopleResults(salesPeople);
+
+//set initial best sales person to first person in array
+let topSalesPerson = salesPeopleResults[0].salesperson;
+//set initial max to first person's total sales in array
+let maxSales = salesPeopleResults[0].count;
+
+//for every person (each individual salesperson) in the array of objects
+//compare with the current topSalesPerson and maxSales
+salesPeopleResults.forEach(obj => {
+    if (obj.count > maxSales) {
+        topSalesPerson = obj.salesperson;
+        maxSales = obj.count;
+    } else if (obj.count === maxSales) {
+        topSalesPerson += ", " + obj.salesperson;
+    }
+});
+
+console.log(`#3: The top sales person is ${topSalesPerson} with ${maxSales} sales`)
+
+
+    // ---------- #4: Which salesperson made the most profit?
+    let salesPeopleProfit = [];
+    
+    //array of salesPeople names define in #3
+    //if the fullname is equal to the sales_agent in the cars object,
+    //then sum the person's total profit and store it in an object with their name
+    salesPeople.forEach(name => {
+        let profit = 0;
+        if (cars.sales_agent === name) {
+            
+        }
+
+    })
+
+
+    // ---------- #5: Which model was the most popular?
+    // ---------- #6: Which bank provided the most loans to our customers?
