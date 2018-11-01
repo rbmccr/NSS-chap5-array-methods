@@ -119,11 +119,12 @@ cars.forEach(sale => {
     sales.push(sale.gross_profit)
 });
 
-console.log(`Total profit for 2017 = $${sales.reduce((a,b) => a+b)}`)
+console.log(`#1: Total profit for 2017 = $${sales.reduce((a,b) => a+b)}`)
 
     // --- In which month did they sell the most cars?
 let saleDates = [];
 let months = [];
+let sortedMonths = [];
 
 //store sale dates in array
 cars.forEach(sale => {
@@ -136,7 +137,35 @@ saleDates.forEach(carSaleDate => {
 })
 
 //sort months by converting strings to numbers first
+//not necessary, but good to be able to count months in console before the function below
 months.sort((a,b) => Number(b) - Number(a))
 
-console.log(saleDates)
-console.log(months)
+function countEachMonth(array) {
+	// make a copy of the input array
+    let copy = array.slice(0);
+    // first loop goes over every element
+	for (let i = 0; i < array.length; i++) {
+		let counter = 0;	
+		// loop over every element in the copy and see if it's the same as each index "i"
+		for (let j = 0; j < copy.length; j++) {
+			if (array[i] == copy[j]) {
+				// increase amount of times duplicate is found
+				counter++;
+				// sets item to undefined
+				delete copy[j];
+			}
+        }
+    // nested loop ends, and any copies of array[i] are recorded in an object and then pushed to an array
+		if (counter > 0) {
+			let a = new Object();
+			a.month = array[i];
+			a.count = counter;
+			sortedMonths.push(a);
+		}
+    }
+}
+
+countEachMonth(months);
+
+console.log("#2: June had the most sales (10 total). See this array: ", sortedMonths)
+
