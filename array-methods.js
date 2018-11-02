@@ -267,7 +267,7 @@ salesPeopleResults.forEach(personObj => {
 })
 
 //Here's the array with each individual's profit results:
-console.log(salesPeopleProfit);
+// console.log(salesPeopleProfit);
 //Now let's find the top earning salesperson:
 
 //set initial best sales person to first person in array
@@ -293,4 +293,104 @@ console.log(`#4: The salesperson with the highest earnings is ${topSalesPersonPr
 
 
     // ---------- #5: Which model was the most popular?
+let carModels = [];
+let compressedCarModels = [];
+
+cars.forEach(obj => {
+    carModels.push(obj.vehicle.model);
+})
+
+//count how many of each car model was purchased
+function countModelsSold(array) {
+    let copy = array.slice(0);
+	for (let i = 0; i < array.length; i++) {
+		let counter = 0;	
+		for (let j = 0; j < copy.length; j++) {
+			if (array[i] == copy[j]) {
+				counter++;
+				delete copy[j];
+			}
+        }
+		if (counter > 0) {
+			let a = new Object();
+			a.model = array[i];
+			a.count = counter;
+			compressedCarModels.push(a);
+		}
+    }
+}
+
+countModelsSold(carModels)
+
+
+let mostSoldModel = compressedCarModels[0].model;
+let frequency = compressedCarModels[0].count;
+
+compressedCarModels.forEach(obj => {
+    if (obj.count > frequency) {
+        mostSoldModel = obj.model;
+        frequency = obj.count;
+    } else if (obj.count === frequency) {
+        mostSoldModel += ", " + obj.model;
+    }
+});
+
+console.log(`#5: The car model sold most frequently was the ${mostSoldModel} with ${frequency} sales`);
+
     // ---------- #6: Which bank provided the most loans to our customers?
+
+// I'm solving this problem the same way as the last few, with a single function
+    let banks = [];
+
+cars.forEach(obj => {
+    banks.push(obj.credit.credit_provider);
+})
+
+//pass in an array of strings to look for the most frequent one in the array
+function findMax(array) {
+    let compressedArray = [];
+    //step 1
+    let copy = array.slice(0);
+	for (let i = 0; i < array.length; i++) {
+		let counter = 0;	
+		for (let j = 0; j < copy.length; j++) {
+			if (array[i] == copy[j]) {
+				counter++;
+				delete copy[j];
+			}
+        }
+		if (counter > 0) {
+			let a = new Object();
+			a.objPropName = array[i];
+			a.objPropCount = counter;
+			compressedArray.push(a);
+		}
+    }
+
+    //step 2
+    let actualBest; 
+    let actualCount;
+    let incrementBest = compressedArray[0].objPropName;
+    let incrementCount = compressedArray[0].objPropCount;
+
+    compressedArray.forEach(obj => {
+        if (obj.objPropCount > incrementCount) {
+            incrementBest = obj.objPropName;
+            incrementCount = obj.objPropCount;
+        } else if (obj.objPropCount === incrementCount) {
+            incrementBest += ", " + obj.objPropName;
+        }
+    })
+
+    actualBest = incrementBest;
+    actualCount = incrementCount;
+
+    return `${actualBest} had the highest result: ${actualCount}.`
+}
+
+console.log("#6:", findMax(banks));
+
+console.log("Testing the function I made to handle #3, 5, and 6...", findMax(carModels));
+console.log("Testing the function I made to handle #3, 5, and 6...", findMax(salesPeople));
+
+
